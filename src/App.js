@@ -1,17 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './index.css';
 import { ReactComponent as RemoveIcon } from './IconCart/remove.svg';
 
+// -------------------USE--------------------
 function App() {
+  const [text, setText] = useState('');
   const [tasks, setTasks] = useState([]);
 
-  const [text, setText] = useState('');
+  // -------------------LOCAL STORAGE----------
+  useEffect(() => {
+    const arr = localStorage.getItem('tasks') || [];
+    setTasks(JSON.parse(arr));
+  }, []);
 
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
+  // -------------------INPUT------------------
   const handlerInput = (event) => {
     const textInput = event.target.value;
     setText(textInput);
   };
-
+  // -------------------ADD---------------------
   const addTask = (event) => {
     event.preventDefault();
     const task = { id: +new Date(), text, completed: false };
@@ -19,33 +29,35 @@ function App() {
     setText('');
   };
 
+  // -------------------DELETE-----------------
   const deleteTask = (id) => {
     const newTasks = tasks.filter((task) => task.id !== id);
     setTasks(newTasks);
   };
-
+  // -------------------CHECK INPUT------------
   const checkInput = (id) => {
     const checked = tasks.map((task) => {
-      if (id === task.id) {
-        return (task.completed = !task.completed);
+      if (task.id === id) {
+        return { ...task, completed: !task.completed };
       }
-      setTasks(checked);
-      return null;
+      return task;
     });
+    // -------------------BTN---------------------
+    setTasks(checked);
   };
 
   const btnAll = () => {
     setTasks(tasks);
   };
 
-  const btnCompleted = () => {
-    const completed = tasks.filter((task) => task.completed === true);
+  const btnCompleted = (task) => {
+    let completed = tasks.filter((task) => task.completed === true);
     setTasks(completed);
   };
 
-  const btnNotCompleted = () => {
-    const completed = tasks.filter((task) => task.completed !== true);
-    setTasks(completed);
+  const btnNotCompleted = (task) => {
+    let notCompleted = tasks.filter((task) => task.completed !== true);
+    setTasks(notCompleted);
   };
 
   return (
@@ -58,21 +70,21 @@ function App() {
         {tasks.map((task) => {
           return (
             <li className='list__item' key={task.id}>
-              <input
-                className='list__input'
-                type='checkbox'
-                checked={task.completed}
-                onClick={() => checkInput(id)}
-              />
-              <p
+              <label
                 className={
                   task.completed
-                    ? 'list__text list__text--active'
-                    : 'list__text'
+                    ? 'list__text list__textSecond list__text--active'
+                    : 'list__text list__textFirst'
                 }
               >
                 {task.text}
-              </p>
+                <input
+                  className='list__input'
+                  type='checkbox'
+                  checked={task.completed}
+                  onChange={() => checkInput(task.id)}
+                />
+              </label>
               <RemoveIcon onClick={() => deleteTask(task.id)} />
             </li>
           );
