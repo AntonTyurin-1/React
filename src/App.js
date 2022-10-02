@@ -1,40 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import './index.css';
-import { ReactComponent as RemoveIcon } from './IconCart/remove.svg';
+import './index2.css';
+import { ReactComponent as RemoveIcon } from './IconCart/delete_FILL0_wght100_GRAD0_opsz24.svg';
 
 // -------------------USE--------------------
 function App() {
+  const [tasks, setTasks] = useState(
+    JSON.parse(localStorage.getItem('tasks')) || []
+  );
   const [text, setText] = useState('');
-  const [tasks, setTasks] = useState([]);
-
-  // -------------------LOCAL STORAGE----------
-  useEffect(() => {
-    const arr = localStorage.getItem('tasks') || [];
-    setTasks(JSON.parse(arr));
-  }, []);
+  const [filter, setFilter] = useState(tasks);
 
   useEffect(() => {
+    setFilter(tasks);
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
-  // -------------------INPUT------------------
-  const handlerInput = (event) => {
-    const textInput = event.target.value;
+
+  const handlerInput = (e) => {
+    const textInput = e.target.value;
     setText(textInput);
   };
-  // -------------------ADD---------------------
-  const addTask = (event) => {
-    event.preventDefault();
-    const task = { id: +new Date(), text, completed: false };
+
+  const addTask = (e) => {
+    e.preventDefault();
+    const task = { id: +new Date(), text: text, completed: false };
     setTasks([...tasks, task]);
     setText('');
   };
 
-  // -------------------DELETE-----------------
-  const deleteTask = (id) => {
+  const removeTask = (id) => {
     const newTasks = tasks.filter((task) => task.id !== id);
     setTasks(newTasks);
   };
-  // -------------------CHECK INPUT------------
+
   const checkInput = (id) => {
     const checked = tasks.map((task) => {
       if (task.id === id) {
@@ -42,63 +39,69 @@ function App() {
       }
       return task;
     });
-    // -------------------BTN---------------------
     setTasks(checked);
   };
 
-  const btnAll = () => {
-    setTasks(tasks);
-  };
-
-  const btnCompleted = (task) => {
-    let completed = tasks.filter((task) => task.completed === true);
-    setTasks(completed);
-  };
-
-  const btnNotCompleted = (task) => {
-    let notCompleted = tasks.filter((task) => task.completed !== true);
-    setTasks(notCompleted);
+  const newFiltered = (completed) => {
+    if (completed === 'all') {
+      setFilter(tasks);
+    } else {
+      const newTasks = [...tasks].filter(
+        (task) => task.completed === completed
+      );
+      setFilter(newTasks);
+    }
   };
 
   return (
     <div className='wrapper'>
       <form className='wrapper__form form' onSubmit={addTask}>
-        <input className='form__input' onChange={handlerInput} value={text} />
-        <button className='form__btn'>Add</button>
+        <input
+          className='form__input'
+          type='text'
+          onChange={handlerInput}
+          value={text}
+        />
+
+        <button className='form__button'>Add</button>
       </form>
+
       <ul className='wrapper__list list'>
-        {tasks.map((task) => {
+        {filter.map((task) => {
           return (
-            <li className='list__item' key={task.id}>
+            <li className='list__item item' key={task.id}>
               <label
                 className={
                   task.completed
-                    ? 'list__text list__textSecond list__text--active'
-                    : 'list__text list__textFirst'
+                    ? 'item__label item-completed list__text--active '
+                    : 'item__label item-notCompleted'
                 }
               >
-                {task.text}
                 <input
-                  className='list__input'
+                  className='item__input'
                   type='checkbox'
                   checked={task.completed}
                   onChange={() => checkInput(task.id)}
                 />
+                {task.text}
               </label>
-              <RemoveIcon onClick={() => deleteTask(task.id)} />
+              <RemoveIcon
+                className='item__icon'
+                onClick={() => removeTask(task.id)}
+              />
             </li>
           );
         })}
       </ul>
       <div className='wrapper__buttons'>
-        <button className='wrapper__btn' onClick={btnAll}>
+        <button className='button' onClick={() => newFiltered('all')}>
           All
         </button>
-        <button className='wrapper__btn' onClick={btnCompleted}>
+        <button className='button' onClick={() => newFiltered(true)}>
           Completed
         </button>
-        <button className='wrapper__btn' onClick={btnNotCompleted}>
-          Not Completed
+        <button className='button' onClick={() => newFiltered(false)}>
+          NotCompleted
         </button>
       </div>
     </div>

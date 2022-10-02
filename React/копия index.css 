@@ -119,10 +119,7 @@ code {
   top: 13px;
   left: 18px;
   opacity: 1;
-
-
 }
-
 
 .list__textSecond::before {
   content: '';
