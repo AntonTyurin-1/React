@@ -1,0 +1,32 @@
+.form {
+  width: 100%;
+ 
+}
+.form__label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2em;
+}
+.form__input {
+  padding: 0.5em;
+  width: 50%;
+  border: none;
+  font-size: 1.5em;
+}
+
+.form__add_todo {
+  padding: 0.5em;
+  border: none;
+  font-size: 1.5em;
+  color: aliceblue;
+  background-color: rgb(98, 166, 243);
+}
+
+.form__add_todo:hover {
+  cursor: pointer;
+}
+.form__add_todo:active {
+  background-color: #fff;
+  color: rgb(60, 135, 220);
+}

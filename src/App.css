@@ -9,43 +9,10 @@
    flex-direction: column;
    justify-content: center;
    align-items: center;
-
-   width: 100%;
+	padding: 1em;
+  
+   max-width: 70%;
    margin: 30px auto;
 
-}
-
-li {
-   margin: 20px auto;
-   padding: 5px;
-
-   width: 150px;
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-}
-input {
-   padding: 5px;
-}
-input:checked + span {
-   text-decoration: line-through;
-}
-label {
-   text-align: center;
-}
-.btns {
-   margin: 30px auto;
-   display: flex;
-}
-.btn {
-   margin: 5px;
-   padding: 5px;
-   border-color: rgb(146, 145, 145);
-   background-color: rgb(131, 130, 130);
-   color: rgb(255, 253, 250);
-}
-.btn:hover,
-:focus{
-   background-color: #fff;
-   color: darkslategray;
+	background-color: rgb(210, 236, 245);
 }

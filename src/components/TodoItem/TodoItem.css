@@ -1,0 +1,35 @@
+.list_item {
+	font-size: 14px;
+	margin: 1em;
+	display: flex;
+	justify-content: space-between;
+	gap: 1em;
+	font-size: 18px;
+	padding: .8em;
+	border-radius: 1em;
+	background-color: rgb(251, 251, 251);
+}
+
+.list_item__text {
+	border: none;
+	background: transparent ;
+	width: 100%;
+	max-height: 1.6em;
+	font-size: 1em;
+	text-align: center;
+	padding: .2em;
+	color: rgb(42, 41, 41);
+	
+}
+.list_item__btn {
+	background-color: rgb(241, 91, 91);
+	border: none;
+	border-radius: .5em;
+	padding: .5em;
+}
+
+input:checked + input {
+   text-decoration: line-through;
+}
+
+
