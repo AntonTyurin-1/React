@@ -41,13 +41,16 @@ export const todoSlice = createSlice({
          toggledTodo.completed = !toggledTodo.completed
          filtered(state.keyFilter, toggledTodo)
       },
+
       toggleAllTodo(state, action) {
          state.todos = state.todos.map((todo) => {
 				if (todo.completed === false) {
 					return {...todo, completed: true}
 				}
+				
            return {...todo, completed: false}
          })
+			
       },
 
       filteredTodo(state, action) {
